@@ -687,7 +687,7 @@
 (defun force-field ()
   (and (ship-ready) (or 
 		    (<= *frame* (+ *force-field-delay* *life-start*))
-		    (and (> *frame* *next-wave*) (<= *frame* (+ *force-field-delay* *next-wave*))))))
+		    (and (>= *frame* *next-wave*) (<= *frame* (+ *force-field-delay* *next-wave*))))))
 
 (defun make-big-explosion (position)
   (dotimes (i 4) (setf (asteroid-collided (add-asteroid position (/ (1+ i) 15.0))) *frame*)))
@@ -713,7 +713,7 @@
   (setf *life-start* *frame*)
   (decf *lives*)
   (if (and (zerop *lives*) (is-hiscore))
-      (setf *new-name* "aaa")
+      (setf *new-name* (make-string 3 :initial-element #\a))
       (setf *new-name-cursor* 0)))
 
 (defun test-ship-collision ()
