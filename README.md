@@ -3,6 +3,8 @@ spaceboulders
 
 Asteroids clone in Common Lisp
 
+![Alt text](/screenshot.png)
+
 Tested on SBCL 1.0.57 on Debian
 
 
