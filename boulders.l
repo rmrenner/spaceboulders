@@ -12,10 +12,6 @@
   `(let ((it ,test-form))
      (if it ,then-form ,else-form))) ;Q. Why let around the else form?
 
-;;; my nif
-(defmacro nif (test-form then-form &optional else-form)
-  `(if (not ,test-form) ,then-form ,else-form))
-
 ;;; check the performance of this against push nreverse- might be pointless
 (defun accumulate (next fn list)
   "Repeatedly append to a list without having to traverse the cdrs"
@@ -602,7 +598,7 @@
   (setf *life-start* 0))
 
 (defun can-start ()
-  (and (not *new-name*) (not (alive)) (> *frame* (+ *life-start* *post-game-delay*))))
+  (and (not (entering-hiscore)) (game-ended)))
 
 ;should use cond
 
@@ -622,9 +618,28 @@
 		     (copy-first (cons (car rest) new) (cdr rest) (1+ index))))))
     (copy-first nil scores 0)))
 
+(defun load-scores ()
+  (let ((score-file (open "hiscores" :if-does-not-exist nil)))
+    (when score-file
+      (setf *hi-scores* (read score-file))
+      (close score-file))))
+
+(defun save-scores ()
+  (let ((score-file (open "hiscores" :direction :output :if-exists :supersede)))
+    (when score-file
+      (print *hi-scores* score-file)
+      (close score-file))))
+
 (defun finish-new-name ()
   (setf *hi-scores* (insert-score *score* *new-name* *hi-scores*))
+  (save-scores)
   (setf *new-name* nil))
+
+(defun game-ended ()
+  (and (not (alive)) (> *frame* (+ *life-start* *post-game-delay*))))
+
+(defun entering-hiscore ()
+  (and *new-name* (game-ended)))
 
 (defun process-actions ()
   (if (ship-ready)
@@ -649,7 +664,7 @@
       (aif (get-action 'fire)
 	   (if (action-begins it)
 	       (start-game))))
-  (when *new-name*
+  (when (entering-hiscore)
     (aif (get-action 'clockwise) (if (action-begins it) (adjust-char #'next-char)))
     (aif (get-action 'anticlockwise) (if (action-begins it) (adjust-char #'prev-char)))
     (aif (get-action 'fire) (if (action-begins it)
@@ -809,7 +824,7 @@
     (is *hi-scores* 0)))
 
 (defun draw-new-name ()
-  (if *new-name*
+  (if (entering-hiscore)
       (draw-shape (centre-word *new-name* 0.7))))
 
 (defun draw-hiscore (index score)
@@ -844,8 +859,7 @@
 	(draw-shape (make-ship)))
     (draw-shapes (make-bullets)))
   (draw-new-name)
-  (nif (alive)
-       (draw-shapes (list (centre-word "game over" 0.8))))
+  (if (not (alive)) (draw-shapes (list (centre-word "game over" 0.8))))
   (when (can-start)
 	(draw-hiscores)
 	(draw-shape (centre-word "Space Boulders" 0))
@@ -905,6 +919,7 @@
 
 (defun main ()
   (unwind-protect ;not even sure this is necessary since it doesn't help at the repl
+       (load-scores)
        (sdl:with-init ()
 	 (init-sounds)
 	 (sdl:disable-key-repeat)
