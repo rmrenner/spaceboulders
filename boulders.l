@@ -84,7 +84,7 @@
 (defparameter *shot-sound* nil)
 (defparameter *explosion-sounds* nil)
 (defparameter *ufo-ping-sounds* nil)
-(defparameter *music-files* (list "sounds/music1.mp3" "sounds/music2.wav" "sounds/music3.wav"))
+(defparameter *music-files* (list "sounds/music1.ogg" "sounds/music2.ogg" "sounds/music3.ogg"))
 (defparameter *ufo-radius* (* 2.2 *scale*))
 (defparameter *ufo-period* 720)
 
@@ -901,15 +901,15 @@
   (play-level-music)
   (setf *shot-sound* (sdl-mixer:load-sample "sounds/shot.aif"))
   (setf *explosion-sounds* (list
-			   (sdl-mixer:load-sample "sounds/explosion1.wav")
-			   (sdl-mixer:load-sample "sounds/explosion2.wav")
-			   (sdl-mixer:load-sample "sounds/explosion3.wav")
-			   (sdl-mixer:load-sample "sounds/explosion4.wav")))
+			   (sdl-mixer:load-sample "sounds/explosion1.aif")
+			   (sdl-mixer:load-sample "sounds/explosion2.aif")
+			   (sdl-mixer:load-sample "sounds/explosion3.aif")
+			   (sdl-mixer:load-sample "sounds/explosion4.aif")))
   (setf *ufo-ping-sounds* (list
-			   (sdl-mixer:load-sample "sounds/ping1.wav")
-			   (sdl-mixer:load-sample "sounds/ping2.wav")
-			   (sdl-mixer:load-sample "sounds/ping3.wav")
-			   (sdl-mixer:load-sample "sounds/ping4.wav"))))
+			   (sdl-mixer:load-sample "sounds/ping1.aif")
+			   (sdl-mixer:load-sample "sounds/ping2.aif")
+			   (sdl-mixer:load-sample "sounds/ping3.aif")
+			   (sdl-mixer:load-sample "sounds/ping4.aif"))))
 
 (defun stop-music ()  (when (not (null *music*))
     (sdl-mixer:Halt-Music)
