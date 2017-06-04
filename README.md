@@ -5,20 +5,28 @@ Asteroids clone in Common Lisp
 
 ![Alt text](/screenshot.png)
 
-Tested on SBCL 1.0.57 on Debian
+Tested on SBCL 1.3.18 on Linux Mint 18.1
 
+## Requirements
 
-Depends on
+Spaceboulders can be run as a script or as a compiled binary. The [Common Lisp environment manager Roswell](https://github.com/roswell/roswell) is required to do both.
 
-lispbuilder-sdl
-lispbuilder-sdl-mixer
-cl-opengl
+You'll also need the [SDL 1.2 Development Libraries](https://www.libsdl.org/download-1.2.php).
 
-Quickest way to get those installed is by installing quicklisp, and then doing e.g.
+On ubuntu and its derivatives, look for libsdl1.2-dev, libsdl-gfx1.2-dev, and libsdl-mixer1.2-dev.
 
-(ql:quickload "lispbuilder-sdl")
+Once those dependencies are satisfied, Spaceboulders can be run as a script on the command line like so:
 
-on each of the dependencies.
+```
+$ ./spaceboulders.ros
+```
+
+Or it can be compiled and run with the following commands:
+
+```
+$ ros build spaceboulders.ros
+$ ./spaceboulders
+```
 
 
 
