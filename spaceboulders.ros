@@ -1,0 +1,21 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| Run or build spaceboulders
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  (pushnew (uiop:getcwd) ql:*local-project-directories*)
+  (ql:register-local-projects)
+  #+quicklisp (ql:quickload '(:spaceboulders) :silent t))
+  
+
+(defpackage :ros.script.spaceboulders.3705479625
+  (:use :cl))
+
+(in-package :ros.script.spaceboulders.3705479625)
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (spaceboulders:main))
+;;; vim: set ft=lisp lisp:

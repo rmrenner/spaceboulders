@@ -1,3 +1,9 @@
+(defpackage :spaceboulders
+  (:use #:common-lisp)
+  (:export :main))
+
+(in-package :spaceboulders)
+
 ;;;; Asteroids
 
 ;;; utilities
